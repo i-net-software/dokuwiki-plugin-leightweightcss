@@ -1,0 +1,7 @@
+base   leightweightcss
+author i-net /// software
+email  tools@inetsoftware.de
+date   2017-02-13
+name   leightweightcss plugin
+desc   Modifications just for us.
+url    http://www.inetsoftware.de
