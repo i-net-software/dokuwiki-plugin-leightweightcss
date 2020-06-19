@@ -1,4 +1,4 @@
-base   leightweightcss
+base   lightweightcss
 author i-net /// software
 email  tools@inetsoftware.de
 date   2017-04-13
