@@ -122,7 +122,7 @@ class action_plugin_leightweightcss extends DokuWiki_Action_Plugin {
     private function excludeFilter( $str, $list ) {
         return !$this->includeFilter( $str, $list );
     }
-    
+  
     /**
      * Filters scripts that are intended for admins only
      *
@@ -148,7 +148,6 @@ class action_plugin_leightweightcss extends DokuWiki_Action_Plugin {
                 '/lib/plugins/multiorphan/',
                 '/lib/plugins/edittable/',
                 '/lib/plugins/sectionedit/',
-                '/lib/plugins/siteexport/',
                 '/lib/plugins/wrap/',
                 '/lib/scripts/',
                 '/lib/styles/',
@@ -188,7 +187,6 @@ class action_plugin_leightweightcss extends DokuWiki_Action_Plugin {
                 '/lib/plugins/multiorphan/',
                 '/lib/plugins/edittable/',
                 '/lib/plugins/sectionedit/',
-                '/lib/plugins/siteexport/',
                 '/lib/plugins/styling/',
                 '/lib/plugins/tag/',
 /*
