@@ -1,14 +1,11 @@
 LeightWeightScript Plugin for DokuWiki
 
 Adds an "Editor and better only" script part and removes a lot of
-unneeded scripts parts for non editors. It makes the JS for end users
+unneeded scripts parts for non editors. It makes the CSS for end users
 a lot smaller and faster to load.
 
-All documentation for this plugin can be found at
-http://www.inetsoftware.de
-
 If you install this plugin manually, make sure it is installed in
-lib/plugins/inetmodifications/ - if the folder is called different it
+lib/plugins/leightweightcss/ - if the folder is called different it
 will not work!
 
 Please refer to http://www.dokuwiki.org/plugins for additional info
