@@ -2,6 +2,6 @@ base   leightweightcss
 author i-net /// software
 email  tools@inetsoftware.de
 date   2017-04-13
-name   leightweightcss plugin
+name   Leightweight CSS plugin
 desc   Modifications just for us.
-url    http://www.inetsoftware.de
+url    https://github.com/i-net-software/dokuwiki-plugin-leightweightcss
