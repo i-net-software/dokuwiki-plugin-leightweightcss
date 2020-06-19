@@ -3,5 +3,5 @@ author i-net /// software
 email  tools@inetsoftware.de
 date   2017-04-13
 name   Leightweight CSS plugin
-desc   Modifications just for us.
+desc   Remove CSS that is not required for non-administrative modes.
 url    https://github.com/i-net-software/dokuwiki-plugin-leightweightcss
