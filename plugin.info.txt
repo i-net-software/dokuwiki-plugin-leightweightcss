@@ -2,6 +2,6 @@ base   lightweightcss
 author i-net /// software
 email  tools@inetsoftware.de
 date   2017-04-13
-name   Leightweight CSS plugin
+name   Lightweight CSS plugin
 desc   Remove CSS that is not required for non-administrative modes.
 url    https://github.com/i-net-software/dokuwiki-plugin-lightweightcss
