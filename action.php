@@ -11,6 +11,70 @@ if(!defined('DOKU_INC')) die();
 
 class action_plugin_lightweightcss extends DokuWiki_Action_Plugin {
 
+    private const DEFAULT_ADMIN_INCLUDE = array(
+        '/css/admin/',
+        '/lib/plugins/config/',
+        '/lib/plugins/searchindex/',
+        '/lib/plugins/sync/',
+        '/lib/plugins/batchedit/',
+        '/lib/plugins/usermanager/',
+        '/lib/plugins/upgrade/',
+        '/lib/plugins/extension/',
+        '/lib/plugins/tagsections/',
+        '/lib/plugins/move/',
+        '/lib/plugins/acl/',
+        '/lib/plugins/multiorphan/',
+        '/lib/plugins/edittable/',
+        '/lib/plugins/sectionedit/',
+        '/lib/plugins/wrap/',
+        '/lib/scripts/',
+        '/lib/styles/',
+    );
+
+    private const DEFAULT_INCLUDE = array(
+        '/lib/tpl/',
+        '/lib/plugins/',
+    );
+
+    private const DEFAULT_EXCLUDE = array(
+        '/css/admin/',
+        '/lib/plugins/dw2pdf/',
+        '/lib/plugins/box2/',
+        '/lib/plugins/config/',
+        '/lib/plugins/uparrow/',
+        '/lib/plugins/imagebox/',
+        '/lib/plugins/imagereference/',
+
+        '/lib/plugins/searchindex/',
+        '/lib/plugins/poll/',
+        '/lib/plugins/cloud/',
+        '/lib/plugins/sync/',
+        '/lib/plugins/wrap/',
+        '/lib/plugins/blog/',
+        '/lib/plugins/batchedit/',
+        '/lib/plugins/usermanager/',
+        '/lib/plugins/upgrade/',
+        '/lib/plugins/imagebox/',
+        '/lib/plugins/extension/',
+        '/lib/plugins/tagsections/',
+        '/lib/plugins/javadoc/',
+        '/lib/plugins/toctweak/',
+        '/lib/plugins/move/',
+        '/lib/plugins/acl/',
+        '/lib/plugins/multiorphan/',
+        '/lib/plugins/edittable/',
+        '/lib/plugins/sectionedit/',
+        '/lib/plugins/styling/',
+        '/lib/plugins/tag/',
+/*
+        'lib/scripts/',
+        'lib/styles/',
+        'conf/userall',
+*/    
+    );
+
+    private const templateStyles = null;
+
     /**
      * Registers a callback function for a given event
      *
@@ -77,6 +141,8 @@ class action_plugin_lightweightcss extends DokuWiki_Action_Plugin {
     public function handle_css_styles(Doku_Event &$event, $param) {
         global $INPUT;
         
+        $this->setupStyles();
+
         switch( $event->data['mediatype'] ) {
             
             case 'print':
@@ -103,7 +169,6 @@ class action_plugin_lightweightcss extends DokuWiki_Action_Plugin {
      * @return boolean
      */
     private function includeFilter( $str, $list ) {
-        
         foreach( $list as $entry ) {
             if ( strpos( $str, $entry ) ) return true;
         }
@@ -131,70 +196,55 @@ class action_plugin_lightweightcss extends DokuWiki_Action_Plugin {
      */
     private function filter_css( $script ) {
         global $INPUT;
-        
         if ( $INPUT->str('f', 'style') == 'admin' ) {
-            return $this->includeFilter( $script, array(
-                '/css/admin/',
-                '/lib/plugins/config/',
-                '/lib/plugins/searchindex/',
-                '/lib/plugins/sync/',
-                '/lib/plugins/batchedit/',
-                '/lib/plugins/usermanager/',
-                '/lib/plugins/upgrade/',
-                '/lib/plugins/extension/',
-                '/lib/plugins/tagsections/',
-                '/lib/plugins/move/',
-                '/lib/plugins/acl/',
-                '/lib/plugins/multiorphan/',
-                '/lib/plugins/edittable/',
-                '/lib/plugins/sectionedit/',
-                '/lib/plugins/wrap/',
-                '/lib/scripts/',
-                '/lib/styles/',
-            ));
+            return $this->includeFilter( $script, $this->templateStyles['admin'] );
         } else {
-            return $this->includeFilter( $script, array(
-    
-                '/lib/tpl/',
-                '/lib/plugins/',
-                
-            )) && $this->excludeFilter( $script, array(
-    
-                '/css/admin/',
-                '/lib/plugins/dw2pdf/',
-                '/lib/plugins/box2/',
-                '/lib/plugins/config/',
-                '/lib/plugins/uparrow/',
-                '/lib/plugins/imagebox/',
-                '/lib/plugins/imagereference/',
+            return $this->includeFilter( $script, $this->templateStyles['include']) && $this->excludeFilter( $script, $this->templateStyles['exclude']);
+        }
+    }
 
-                '/lib/plugins/searchindex/',
-                '/lib/plugins/poll/',
-                '/lib/plugins/cloud/',
-                '/lib/plugins/sync/',
-                '/lib/plugins/wrap/',
-                '/lib/plugins/blog/',
-                '/lib/plugins/batchedit/',
-                '/lib/plugins/usermanager/',
-                '/lib/plugins/upgrade/',
-                '/lib/plugins/imagebox/',
-                '/lib/plugins/extension/',
-                '/lib/plugins/tagsections/',
-                '/lib/plugins/javadoc/',
-                '/lib/plugins/toctweak/',
-                '/lib/plugins/move/',
-                '/lib/plugins/acl/',
-                '/lib/plugins/multiorphan/',
-                '/lib/plugins/edittable/',
-                '/lib/plugins/sectionedit/',
-                '/lib/plugins/styling/',
-                '/lib/plugins/tag/',
-/*
-                'lib/scripts/',
-                'lib/styles/',
-                'conf/userall',
-*/    
-            ));
+    private function setupStyles() {
+        global $CONF;
+        global $INPUT;
+
+        if ( !is_null( $this->templateStyles) ) {
+            return;
+        }
+
+        $this->templateStyles = array(
+            'admin' => action_plugin_lightweightcss::DEFAULT_ADMIN_INCLUDE,
+            'include' => action_plugin_lightweightcss::DEFAULT_INCLUDE,
+            'exclude' => action_plugin_lightweightcss::DEFAULT_EXCLUDE
+        );
+
+        $tpl = $INPUT->str('t', $conf['template']);
+        $inifile = DOKU_INC . 'lib/tpl/' . $tpl . '/style.ini';
+
+        if (!file_exists($inifile)) {
+            return;
+        }
+
+        $styleini = parse_ini_file($inifile, true);
+        if ( array_key_exists('lightweightcss', $styleini) ) {
+
+            foreach( $styleini['lightweightcss'] as $file => $mode ) {
+
+                switch( $mode ) {
+                    case 'admin':
+                    case 'include':
+                    case 'exclude':
+                        break;
+                    default:
+                        continue 2;
+                }
+
+                if ( !array_key_exists($mode, $this->templateStyles) ) {
+                    $this->templateStyles[$mode] = array();
+                }
+
+                array_push( $this->templateStyles[$mode], $file);
+                $this->templateStyles[$mode] = array_unique( $this->templateStyles[$mode] );
+            }
         }
     }
 }

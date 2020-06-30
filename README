@@ -1,4 +1,4 @@
-LeightWeightScript Plugin for DokuWiki
+Lightweight CSS Plugin for DokuWiki
 
 Adds an "Editor and better only" script part and removes a lot of
 unneeded scripts parts for non editors. It makes the CSS for end users
@@ -24,3 +24,22 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 See the COPYING file in your DokuWiki folder for details
+
+## Setup
+
+The __Lightweight CSS Plugin__ filters styles that are for administrative purposes and adds an extra stylesheet for them.
+
+There is a list of configured plugins that are white/blacklisted for certain areas.
+
+Users can customize this list using the `style.ini` of their template by adding a section 
+
+    [lightweightcss]
+    
+    ; admin style
+    lib/plugins/<plugin> = admin
+
+    ; user style include
+    lib/plugins/<plugin> = include
+
+    ; user style exclude
+    lib/plugins/<plugin> = exclude
